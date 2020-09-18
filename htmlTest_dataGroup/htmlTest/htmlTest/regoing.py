@@ -1,4 +1,3 @@
-
 import requests
 import time
 
@@ -48,9 +47,9 @@ async def requests_(url, req_headers, req_cookies, func, form, file):
     rtt = int((end - start) * 1000)
     # 请求状态码
     status = resp.status_code
-    print('status code: ' + str(status) + '\t' + 'RTT: ' + str(rtt) + 'ms')
+    # print('status code: ' + str(status) + '\t' + 'RTT: ' + str(rtt) + 'ms')
     # 获取response cookie信息
-    print('------------cookies---------------')
+    # print('------------cookies---------------')
     for cookie in session.cookies:
         name = cookie.name
         value = cookie.value
@@ -65,18 +64,18 @@ async def requests_(url, req_headers, req_cookies, func, form, file):
             'path': path,
             'secure': secure
         })
-        print(f"{name} = {value}\t{domain}\t{path}\t{secure}")
+        # print(f"{name} = {value}\t{domain}\t{path}\t{secure}")
     # 获取response headers
     resp_headers = resp.headers
-    print('------------headers---------------')
+    # print('------------headers---------------')
     # print(resp_headers)
-    for kv in resp_headers.items():
-        # print(kv)
-        print(f'{kv[0]} = {kv[1]}')
+    # for kv in resp_headers.items():
+    #     # print(kv)
+    #     print(f'{kv[0]} = {kv[1]}')
     # print(resp.text)
     # 获取response body
     content = resp.text
-    print(content)
+    # print(content)
     # 返回结果
     ret_dic = {
         'status': status,  # int

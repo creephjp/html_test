@@ -16,9 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
-from . import search2,views
+from . import search2, views
 urlpatterns = [
-
     path('admin/', admin.site.urls),
     url(r'^search-post$', search2.search_post),
     path('main/', search2.search_post),
