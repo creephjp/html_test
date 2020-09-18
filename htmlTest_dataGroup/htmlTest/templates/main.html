@@ -85,24 +85,24 @@
         </ul>
 
         <div class="tab-content">
-            <div class="tab-pane content-tab active" id="request-tab-content-body" role="tabpanel"
+            <div class="item-input tab-pane content-tab active" id="request-tab-content-body"  role="tabpanel"
                 aria-labelledby="request-tab-body">
-                <textarea class="form-control request-content" id="request-content-body" rows="3"
+                <textarea class="form-control request-content" id="request-content-body" name="request-content-body" rows="3"
                     placeholder="key1: value1 &#13;&#10;key2: value2"></textarea>
                 <div class="btn-group btn-group-sm content-tool-bar" role="group">
-                    <button type="button" class="btn btn-light" id="button-request-body-view-kv" name="data_format" value="kv">KV</button>
-                    <button type="button" class="btn btn-light" id="button-request-body-view-raw" name="data_format" value="raw">Raw</button>
+                    <input type="button" class="btn btn-light" id="button-request-body-view-kv" name="data_format" value="kv"></input>
+                    <input type="button" class="btn btn-light" id="button-request-body-view-raw" name="data_format" value="raw"></input>
                 </div>
             </div>
 
-            <div class="tab-pane content-tabe" id="request-tab-content-cookie" role="tabpanel"
+            <div class="item-input tab-pane content-tabe" id="request-tab-content-cookie" role="tabpanel"
                 aria-labelledby="request-tab-cookie">
-                <textarea class="form-control request-content" id="request-content-cookie" rows="4"
+                <textarea class="form-control request-content" id="request-content-cookie" name="request-content-cookie" rows="4"
                     placeholder="json"></textarea>
             </div>
-            <div class="tab-pane content-tab" id="request-tab-content-header" role="tabpanel"
+            <div class="item-input tab-pane content-tab" id="request-tab-content-header" role="tabpanel"
                 aria-labelledby="request-tab-header">
-                <textarea class="form-control request-content" id="request-content-header" rows="4"
+                <textarea class="form-control request-content" id="request-content-header" name="request-content-header" rows="4"
                     placeholder="User-Agent: Mozilla/5.0 &#13;&#10;Cookie: key=value;"></textarea>
             </div>
         </div>
