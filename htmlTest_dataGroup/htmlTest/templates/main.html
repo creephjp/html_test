@@ -47,6 +47,16 @@
         </div>
     </nav>
 
+    <!--
+    <script>
+    $(document).ready(function(){
+        $("#btn-submit").click(function(){
+        $("#response-tab-content-body").css("height","0px");
+        });
+    });
+    </script>
+    -->
+
     <div class="container">
         <form action="/form-input/" method="post" enctype="multipart/form-data">
             {% csrf_token %}
@@ -62,7 +72,7 @@
             </select>
 
             <input type="text" class="form-control" name="url">
-            <button class="btn btn-outline-primary" type="submit">提交</button>
+            <button class="btn btn-outline-primary" type="submit" id="btn-submit">提交</button>
         </class>
         <br>
         <br>
@@ -89,9 +99,11 @@
                 aria-labelledby="request-tab-body">
                 <textarea class="form-control request-content" id="request-content-body" name="request-content-body" rows="3"
                     placeholder="key1: value1 &#13;&#10;key2: value2"></textarea>
-                <div class="btn-group btn-group-sm content-tool-bar" role="group">
-                    <input type="button" class="btn btn-light" id="button-request-body-view-kv" name="data_format" value="kv"></input>
-                    <input type="button" class="btn btn-light" id="button-request-body-view-raw" name="data_format" value="raw"></input>
+                <div class="col-xs">
+                <select class="custom-select col-1" name="data_format">
+                    <option value="raw" selected>RAW</option>
+                    <option value="key">KEY</option>
+                </select>
                 </div>
             </div>
 
@@ -125,9 +137,8 @@
         </ul>
         <div class="tab-content">
             <div class="tab-pane content-tab active" id="response-tab-content-body" role="tabpanel"
-                aria-labelledby="response-tab-body">
-                <textarea class="form-control response-content" id="response-content-body" rows="4"
-                    placeholder="body">{{ body }}</textarea>
+                aria-labelledby="response-tab-body" style="border:1px solid #cfd4d9;">
+                <pre>{{ body }}</pre>
             </div>
 
             <div class="tab-pane content-tabe" id="response-tab-content-header" role="tabpanel"
