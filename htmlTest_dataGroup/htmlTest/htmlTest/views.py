@@ -4,11 +4,13 @@ import time
 import requests
 from django.http import HttpResponse
 from django.shortcuts import render
-
+from TestModel.models import Test
 import asyncio
 import re
 import json
 import logging
+from . import testdb
+from TestModel import models
 
 # from . import regoing
 from . import regoing
@@ -152,6 +154,8 @@ def single_start(request): # request
             return render(request, "main.html", result)
     elif (func == 'GET' or func == 'DELETE') and url != '':
         result = asyncio.get_event_loop().run_until_complete(regoing.requests_(url, req_headers, req_cookies, func, {}, {}))
+        # testdb(**result)
+        models.Test.objects.create(**result)
         return render(request, "main.html", result)
 
 
