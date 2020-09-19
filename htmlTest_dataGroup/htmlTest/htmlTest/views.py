@@ -91,6 +91,15 @@ def split_cookies(str_cookies, url):
     return cookies
 
 
+def is_json(myjson):
+ try:
+  json_object = json.loads(myjson)
+ except ValueError as e:
+    return False
+
+ return True
+
+
 def single_start(request): # request
     # 获取需要解析网页的url及请求方式，如POST｜GET等
     print(str(request.POST))
@@ -101,9 +110,9 @@ def single_start(request): # request
         url = ''
         func = ''
     # 获取request中所传输的数据，比如需要设置的headers参数和cookie信息
-    str_headers = request.POST.get('headers', '')
+    str_headers = request.POST.get('request-content-header', '')
     req_headers = split_headers(str_headers)
-    str_cookies = request.POST.get('req_cookies', '')
+    str_cookies = request.POST.get('request-content-cookie', '')
     req_cookies = split_cookies(str_cookies, url)
 
     # 设置并发队列
@@ -114,13 +123,19 @@ def single_start(request): # request
         data_format = request.POST.get('data_format', '')
         print("提交方式为：" + str(data_format))
         if data_format == 'raw':
-            body = request.POST.get('body', '')
+            body = request.POST.get('request-content-body', '')
+            # 根据用户输入body格式进行处理提交格式
+            if is_json(body):
+                req_headers['Content-Type'] = 'application/json'
+            else:
+                req_headers['Content-Type'] = 'text/xml'
+
             result = asyncio.get_event_loop().run_until_complete(regoing.requests_(url, req_headers, req_cookies, func, body, {}))
             # result = {}
             return render(request, "main.html", result)
         else:
             # 处理表单
-            str_form = request.POST.get('body', '')
+            str_form = request.POST.get('request-content-body', '')
             print(str_form)
             form = split_form(str_form)
             # 处理所传输的文件
@@ -138,10 +153,6 @@ def single_start(request): # request
     elif (func == 'GET' or func == 'DELETE') and url != '':
         result = asyncio.get_event_loop().run_until_complete(regoing.requests_(url, req_headers, req_cookies, func, {}, {}))
         return render(request, "main.html", result)
-
-
-   # tasks = [asyncio.ensure_future(your_function(url)) for url in urls]
-    # asyncio.get_event_loop().run_until_complete(asyncio.wait(tasks))
 
 
 # def many_start(data_list):
