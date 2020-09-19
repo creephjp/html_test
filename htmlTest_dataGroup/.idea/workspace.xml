@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ef085868-ae8d-4043-bf8f-7cbf07ba9f44" name="Default Changelist" comment="" />
+    <list default="true" id="ef085868-ae8d-4043-bf8f-7cbf07ba9f44" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../demo_django01/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo_django01/app01/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo_django01/app01/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo_django01/app01/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo_django01/app01/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo_django01/app01/migrations/0002_auto_20200410_1108.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo_django01/app01/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo_django01/app01/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo_django01/app01/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo_django01/app01/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo_django01/db.sqlite3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo_django01/demo_django01/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo_django01/demo_django01/asgi.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo_django01/demo_django01/settings.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo_django01/demo_django01/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo_django01/demo_django01/wsgi.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo_django01/manage.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo_django01/templates/login.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hello.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,11 +48,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/htmlTest/htmlTest/regoing.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="5" selection-start-line="5" selection-end-line="86" selection-end-column="5" />
-              <folding>
-                <element signature="e#1#16#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="180">
+              <caret line="5" selection-start-line="5" selection-end-line="86" />
             </state>
           </provider>
         </entry>
@@ -40,7 +58,7 @@
         <entry file="file://$PROJECT_DIR$/htmlTest/htmlTest/urls.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="855">
-              <caret line="22" column="47" selection-start-line="22" selection-start-column="47" selection-end-line="22" selection-end-column="47" />
+              <caret line="22" column="39" selection-start-line="22" selection-start-column="39" selection-end-line="22" selection-end-column="39" />
               <folding>
                 <element signature="e#632#664#0" expanded="true" />
               </folding>
@@ -51,8 +69,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/htmlTest/htmlTest/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="493">
-              <caret line="139" column="83" lean-forward="true" selection-start-line="139" selection-start-column="83" selection-end-line="139" selection-end-column="83" />
+            <state relative-caret-position="5625">
+              <caret line="139" column="39" selection-start-line="139" selection-start-column="39" selection-end-line="139" selection-end-column="39" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -92,8 +110,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/htmlTest/templates/main.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="115">
-              <caret line="138" column="40" selection-start-line="138" selection-start-column="40" selection-end-line="138" selection-end-column="40" />
+            <state relative-caret-position="45">
+              <caret line="4" column="31" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -143,6 +161,9 @@
       <find>req_cookies</find>
     </findStrings>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
@@ -165,17 +186,19 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="434" />
-    <option name="y" value="270" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="447" />
+    <option name="y" value="99" />
     <option name="width" value="1940" />
-    <option name="height" value="888" />
+    <option name="height" value="938" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -188,28 +211,16 @@
               <item name="htmlTest_dataGroup" type="462c0819:PsiDirectoryNode" />
               <item name="htmlTest" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="htmlTest_dataGroup" type="b2602c69:ProjectViewProjectNode" />
-              <item name="htmlTest_dataGroup" type="462c0819:PsiDirectoryNode" />
-              <item name="htmlTest" type="462c0819:PsiDirectoryNode" />
-              <item name="htmlTest" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="htmlTest_dataGroup" type="b2602c69:ProjectViewProjectNode" />
-              <item name="htmlTest_dataGroup" type="462c0819:PsiDirectoryNode" />
-              <item name="htmlTest" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="mysql" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -297,11 +308,15 @@
       <workItem from="1600414542075" duration="208000" />
       <workItem from="1600414767030" duration="42000" />
       <workItem from="1600414824789" duration="1869000" />
+      <workItem from="1600489267133" duration="84000" />
+      <workItem from="1600489375922" duration="70000" />
+      <workItem from="1600489467691" duration="29000" />
+      <workItem from="1600489636380" duration="665000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="39334000" />
+    <option name="totallyTimeSpent" value="40182000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -313,10 +328,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="402" y="879" width="1940" height="888" extended-state="1" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="2576" height="1416" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.175" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13513513" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -330,7 +344,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.3125828" />
+      <window_info anchor="bottom" id="Terminal" order="11" visible="true" weight="0.18408737" />
       <window_info anchor="bottom" id="Python Console" order="12" weight="0.395947" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -441,13 +455,46 @@
     <entry file="file://$PROJECT_DIR$/htmlTest/templates/muit.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/htmlTest/htmlTest/regoing.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="5" selection-start-line="5" selection-end-line="86" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/htmlTest/htmlTest/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="855">
-          <caret line="22" column="47" selection-start-line="22" selection-start-column="47" selection-end-line="22" selection-end-column="47" />
+          <caret line="22" column="39" selection-start-line="22" selection-start-column="39" selection-end-line="22" selection-end-column="39" />
           <folding>
             <element signature="e#632#664#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htmlTest/htmlTest/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5625">
+          <caret line="139" column="39" selection-start-line="139" selection-start-column="39" selection-end-line="139" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htmlTest/htmlTest/init.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#1#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htmlTest/htmlTest/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
         </state>
       </provider>
     </entry>
@@ -479,46 +526,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/htmlTest/htmlTest/regoing.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="5" selection-start-line="5" selection-end-line="86" selection-end-column="5" />
-          <folding>
-            <element signature="e#1#16#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htmlTest/htmlTest/init.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#1#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htmlTest/htmlTest/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htmlTest/htmlTest/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="139" column="83" lean-forward="true" selection-start-line="139" selection-start-column="83" selection-end-line="139" selection-end-column="83" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/htmlTest/templates/main.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="138" column="40" selection-start-line="138" selection-start-column="40" selection-end-line="138" selection-end-column="40" />
+        <state relative-caret-position="45">
+          <caret line="4" column="31" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="31" />
         </state>
       </provider>
     </entry>

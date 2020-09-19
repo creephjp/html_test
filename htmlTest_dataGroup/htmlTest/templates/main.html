@@ -19,6 +19,8 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
     </script>
+    <script src="https://cdn.staticfile.org/jquery/2.0.0/jquery.min.js">
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
     </script>
@@ -54,8 +56,30 @@
         $("#response-tab-content-body").css("height","0px");
         });
     });
+
+    $('#inputGroupSelect').change(function(){
+            alert($("#inputGroupSelect").get(0).selectedIndex);
+            if($("#inputGroupSelect").get(0).selectedIndex = 2){
+                $('#put-file').show();
+            }
+        });
     </script>
     -->
+    <script>
+                $(function () {
+                var checkText = "";
+                $("#inputGroupSelect").change(function () {
+                    //获取文件的value值
+                    checkText = $("#inputGroupSelect").find ("option:selected").text ();
+                    if(checkText=="PUT" || checkText=="POST"){
+                        $('#put-file').show();
+                    }
+                    else
+                        $('#put-file').hide();
+
+                })
+            });
+    </script>
 
     <div class="container">
         <form action="/form-input/" method="post" enctype="multipart/form-data">
@@ -63,7 +87,7 @@
         <br><br>
         <h1>Http接口测试工具</h1>
         <class class="input-group input-group-lg">
-            <select class="custom-select col-1" id="inputGroupSelect04" name="func">
+            <select class="custom-select col-1" id="inputGroupSelect" name="func">
 
                 <option value="GET" selected>GET</option>
                 <option value="POST">POST</option>
@@ -104,6 +128,7 @@
                     <option value="raw" selected>RAW</option>
                     <option value="key">KEY</option>
                 </select>
+                    <input type="file" id="put-file" style="display:none" >
                 </div>
             </div>
 
