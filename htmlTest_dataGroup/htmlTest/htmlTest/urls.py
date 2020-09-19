@@ -24,6 +24,7 @@ urlpatterns = [
     path('form-input/', views.single_start),
     path('index/', search2.search_post),
     path('main/muit/',views.muit),
+    path('muit/',views.muit),
     url(r'^$', views.hello),
 ]
 # "User-Agent:Agent"

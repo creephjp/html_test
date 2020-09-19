@@ -86,6 +86,10 @@ DATABASES = {
         'PORT': 3306, # 端口
         'USER': 'root',  # 数据库用户名
         'PASSWORD': '123456', # 数据库密码
+        'TEST': {
+            'CHARSET': 'utf8',
+            'COLLATION': 'utf8_general_ci'
+        }
     }
 }
 
