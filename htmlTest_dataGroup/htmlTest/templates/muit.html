@@ -46,40 +46,84 @@
             </ul>
         </div>
     </nav>
-
-
+    <form action="/uploadFile/" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
     <div class="container">
         <br><br>
         <h1>Http接口批量测试</h1>
 
         <div class="input-group">
             <div class="custom-file">
-                <input type="file" class="custom-file-input" id="inputGroupFile" name="uploadFile">
-                <label class="custom-file-label" for="inputGroupFile" id="uploadFileNameLable">Choose file</label>
+                <input type="file" class="custom-file-input" id="inputGroupFile" name="myfile">
+                <label class="custom-file-label" for="inputGroupFile" id="uploadFileNameLable" >选择文件</label>
             </div>
             <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon">Button</button>
+                <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon">提交</button>
             </div>
         </div>
-
-        <script>
+{#        <script>#}
+{#            $(function () {#}
+{#                var file = "";#}
+{#                var fileName = "";#}
+{#                var fileExt = "";#}
+{#                $("#inputGroupFile").change(function () {#}
+{#                    //获取文件的value值#}
+{#                    file = $("#inputGroupFile").val()#}
+{#                    //获取文件名+扩展名#}
+{#                    fileName = file.split("\\").pop();#}
+{#                    #}
+{#                    $("#uploadFileNameLable").text(fileName);#}
+{#                    #}
+{#                })#}
+{#            });#}
+{#        </script>#}
+<script>
             $(function () {
                 var file = "";
                 var fileName = "";
                 var fileExt = "";
+                var bodyText = "";
                 $("#inputGroupFile").change(function () {
                     //获取文件的value值
                     file = $("#inputGroupFile").val()
                     //获取文件名+扩展名
                     fileName = file.split("\\").pop();
-                    
                     $("#uploadFileNameLable").text(fileName);
-                    
+
+                });
+                $("td").mouseover(function(event){
+
+                    $("#showbox").show().html($(this).text());
+
+                })
+                $("td").mousemove(function(event){
+                    var x= event.pageX + 10 + "px";
+                    var y= event.pageY + 10 + "px";
+                    $("#showbox").css({"left":x,"top":y});
+                })
+                $("td").mouseout(function(){ $("#showbox").hide();
                 })
             });
         </script>
+<style>
+            td{
+               overflow:hidden;
+                white-space:nowrap;
+                text-overflow:ellipsis;
+            }
+            #showbox{
+                position:absolute;
+                background-color:#d0d4d8;
+                left:159px;
+                top:100px;
+                height:20px;
+                z-index:99;
+                display:none;
+                text-align:center;
+            }
+        </style>
 
-
+        <pre id="showbox"></pre>
         <br><br><br>
         <h2>测试结果</h2>
         <div class="table-responsive">
@@ -96,20 +140,24 @@
                     </tr>
                 </thead>
                 <tbody>
+                {% for doc in results %}
                     <tr>
-                        <td>Marksdfasghjhkhhgdddddsfsagargathyhnhynyjuyjyukfy</td>
-                        <td></td>
-                        <td>111</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>Marksdfasghjhkhhgdddddsfsagargathyhnhynyjuyjyukfy</td>
+                        <td>{{ doc.url }}</td>
+                        <td>{{ doc.func }}</td>
+                        <td>{{ doc.status }}</td>
+                        <td>{{ doc.RTT }}</td>
+{#                        <td>{{ doc.data_format }}</td>#}
+                        <td>{{ doc.resp_headers }}</td>
+                        <td>{{ doc.resp_cookies }}</td>
+                        <td>{{ doc.body }}</td>
                     </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
 
+    </form>
 
 </body>
 

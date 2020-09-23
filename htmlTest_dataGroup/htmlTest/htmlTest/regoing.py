@@ -78,10 +78,14 @@ async def requests_(url, req_headers, req_cookies, func, form, file):
     # print(content)
     # 返回结果
     ret_dic = {
+        'url': url,
+        'func': func,
+        'req_headers': req_headers,
+        'req_cookies': req_cookies,
         'status': status,  # int
         'RTT': rtt,  # int
-        'headers': resp_headers,  # dic
-        'cookies': resp_cookies,  # list[dic{}]
+        'resp_headers': resp_headers,  # dic
+        'resp_cookies': resp_cookies,  # list[dic{}]
         'body': content
     }
 

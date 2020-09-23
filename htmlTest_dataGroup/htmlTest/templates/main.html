@@ -128,7 +128,9 @@
                     <option value="raw" selected>RAW</option>
                     <option value="key">KEY</option>
                 </select>
-                    <input type="file" id="put-file" style="display:none" >
+
+                    <input type="file" id="put-file" name="file" style="display:none">
+
                 </div>
             </div>
 
@@ -169,12 +171,12 @@
             <div class="tab-pane content-tabe" id="response-tab-content-header" role="tabpanel"
                 aria-labelledby="response-tab-header">
                 <textarea class="form-control response-content" id="response-content-header" rows="4"
-                    placeholder="header">{{ headers }}</textarea>
+                    placeholder="header">{{ resp_headers }}</textarea>
             </div>
             <div class="tab-pane content-tab" id="response-tab-content-cookie" role="tabpanel"
                 aria-labelledby="response-tab-cookie">
                 <textarea class="form-control response-content" id="response-content-cookie" rows="4"
-                    placeholder="Cookie">{{ cookies }}</textarea>
+                    placeholder="Cookie">{{ resp_cookies }}</textarea>
             </div>
         </div>
 

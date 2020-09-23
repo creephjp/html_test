@@ -1,8 +1,10 @@
 import os
 import time
+from csv import excel
 
+import pandas
 import requests
-from django.http import HttpResponse
+from django.http import HttpResponse, request
 from django.shortcuts import render
 from TestModel.models import Test
 import asyncio
@@ -36,8 +38,6 @@ def muit(request):
     return render(request, 'muit.html')
 
 
-
-
 def split_headers(str_headers):
     if str_headers != '':
         dic_headers = {}
@@ -46,7 +46,6 @@ def split_headers(str_headers):
         # print(list_raw)
         for item in list_raw:
             kv_list = item.split(':')
-
             dic_headers[kv_list[0]] = kv_list[1]
     else:
         dic_headers = {
@@ -141,53 +140,124 @@ def single_start(request): # request
             print(str_form)
             form = split_form(str_form)
             # 处理所传输的文件
-            filename = request.FILES.get('filename', '')
-            file_content = request.FILES.get('file_content', '')
-            if filename == '':
+            file = request.FILES.get('file', '')
+            # file_content = request.FILES.get('file_content', '')
+            print("文件为：" + str(file))
+            if file == '':
                 files = {}
             else:
+                filename = os.path.join(
+                    "C:\\python_workspace\\html_test\\html_test1\\htmlTest_dataGroup\\htmlTest\\csv_dir", file.name)
+                destination = open(filename, 'wb+')
+                for chunk in file.chunks():
+                    destination.write(chunk)
                 files = {
-                    filename: file_content
+                    file.name: destination
                 }
+                # destination.close()
             result = asyncio.get_event_loop().run_until_complete(
                 regoing.requests_(url, req_headers, req_cookies, func, form, files))
             return render(request, "main.html", result)
     elif (func == 'GET' or func == 'DELETE') and url != '':
         result = asyncio.get_event_loop().run_until_complete(regoing.requests_(url, req_headers, req_cookies, func, {}, {}))
         # testdb(**result)
+        #存储到数据库
         models.Test.objects.create(**result)
         return render(request, "main.html", result)
 
 
-# def many_start(data_list):
-#     # url=[''] func=[''] headers=[{}] cookies[[{}]] body[""]
-#
-#     get_delete_tasks = []
-#     post_raw_tasks = []
-#     post_other_tasks = []
-#
-#     for req in data_list:
-#         # 处理headers,cookies,form
-#         print("into for")
-#         print(req)
-#         url = req.get('url')
-#         func = req.get('func')
-#         req_headers = split_headers(req.get('headers', ''))
-#         req_cookies = split_cookies(req.get('cookies', ''), req.get('url'))
-#         if url != '' and (func == 'GET' or func == 'DELETE'):
-#             print("into get")
-#             get_delete_tasks.append(asyncio.ensure_future(pptrgoing.requests_(url, req_headers, req_cookies, func)))
-#         elif url != '' and func == 'POST':
-#             print("into post")
-#             data_format = req.get('data_format', '')
-#             req_body = req.get('body', '')
-#             if data_format == 'raw':
-#                 post_raw_tasks.append(asyncio.ensure_future(
-#                     pptrgoing.requests_(url, req_headers, req_cookies, func, req_body)))
-#             elif data_format == 'kv':
-#                 post_other_tasks.append(asyncio.ensure_future(
-#                     regoing.requests_(url, req_headers, req_cookies, func, req_body, {})))
-#
-#     if post_other_tasks: asyncio.get_event_loop().run_until_complete(asyncio.wait(post_other_tasks))
-#     if post_raw_tasks: asyncio.get_event_loop().run_until_complete(asyncio.wait(post_raw_tasks))
-#     if get_delete_tasks: asyncio.get_event_loop().run_until_complete(asyncio.wait(get_delete_tasks))
+def upload_file(request):
+    if request.method =="POST":
+        myFile = request.FILES.get("myfile",None)
+        if not myFile:
+            return HttpResponse("no files for upload")
+        filename1 = os.path.join("C:\\python_workspace\\html_test\\html_test1\\htmlTest_dataGroup\\htmlTest\\csv_dir", myFile.name)
+        destination = open(filename1, 'wb+')
+        for chunk in myFile.chunks():
+            destination.write(chunk)
+        destination.close()
+        results = excel(filename1)
+        # print("返回结果：" + str(results))
+        results = many_start(request, results)
+
+        # return results
+        return render(request, "muit.html", {'results': results})
+
+
+def excel(filename1):
+    list = []
+    try:
+        sheet = pandas.read_excel(filename1, "Sheet1")
+        print("表单长度为：" + str(len(sheet)))
+        # i = 0
+        # list = []
+        for row in sheet.index.values :
+            docs = dict()
+            docs['url'] = re.sub('nan', '', str(sheet.iloc[row, 0]))
+            docs['func'] = re.sub('nan', '', str(sheet.iloc[row, 1]))
+            docs['data_format'] = re.sub('nan', '', str(sheet.iloc[row, 2]))
+            docs['headers'] = re.sub('nan', '', str(sheet.iloc[row, 3]))
+            docs['cookies'] = re.sub('nan', '', str(sheet.iloc[row, 4]))
+            docs['body'] = re.sub('nan', '', str(sheet.iloc[row, 5]))
+            list.append(docs)
+            # i = i+1
+        # list2 = [1,2,3,4]
+        # dic = zip(list2,list)
+    except Exception as e:
+        print(e)
+    # return docs
+    return list
+
+
+def many_start(request, data_list):
+    # url=[''] func=[''] headers=[{}] cookies[[{}]] body[""]
+
+    get_delete_tasks = []
+    post_raw_tasks = []
+    post_other_tasks = []
+    results = []
+    print("所传输的数据：" + str(data_list))
+    for req in data_list:
+        # 处理headers,cookies,form
+        print("into for")
+        # print(req)
+
+        url = req.get('url')
+        func = req.get('func')
+        req_headers = split_headers(req.get('headers', ''))
+        req_cookies = split_cookies(req.get('cookies', ''), req.get('url'))
+
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+
+        if url != '' and (func == 'GET' or func == 'DELETE'):
+            print("into get")
+            #get_delete_tasks.append(asyncio.ensure_future(
+            temp_result = asyncio.get_event_loop().run_until_complete(regoing.requests_(url, req_headers, req_cookies, func, {}, {}))
+            results.append(temp_result)
+            # ))
+        elif url != '' and func == 'POST':
+            print("into post")
+            data_format = req.get('data_format', '')
+            req_body = req.get('body', '')
+            if data_format == 'raw':
+                #post_raw_tasks.append(asyncio.ensure_future(
+                temp_result = asyncio.get_event_loop().run_until_complete(regoing.requests_(url, req_headers, req_cookies, func, req_body, {}))
+                results.append(temp_result)
+                #))
+            elif data_format == 'kv':
+                req_body = split_form(req_body)
+                # post_other_tasks.append(asyncio.ensure_future(
+                temp_result = asyncio.get_event_loop().run_until_complete(regoing.requests_(url, req_headers, req_cookies, func, req_body, {}))
+                results.append(temp_result)
+                # ))
+        models.Test.objects.create(**temp_result)
+
+    # if post_other_tasks: asyncio.get_event_loop().run_until_complete(asyncio.wait(post_other_tasks))
+    # if post_raw_tasks: asyncio.get_event_loop().run_until_complete(asyncio.wait(post_raw_tasks))
+    # if get_delete_tasks: asyncio.get_event_loop().run_until_complete(asyncio.wait(get_delete_tasks))
+
+    # for item in get_delete_tasks:
+    #     print("结果为：")
+    #     print(type(item.result()))
+    return results

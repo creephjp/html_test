@@ -26,5 +26,7 @@ urlpatterns = [
     path('main/muit/',views.muit),
     path('muit/',views.muit),
     url(r'^$', views.hello),
+    path('uploadFile/', views.upload_file),
+
 ]
 # "User-Agent:Agent"
