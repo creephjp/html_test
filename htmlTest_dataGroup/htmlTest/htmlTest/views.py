@@ -23,6 +23,7 @@ from .init import split_form
 def hello(request):
     return render(request, 'main.html')
 
+
 # def upload(request):
 #     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #     if request.method == 'POST':# 获取对象
@@ -93,15 +94,15 @@ def split_cookies(str_cookies, url):
 
 
 def is_json(myjson):
- try:
-  json_object = json.loads(myjson)
- except ValueError as e:
-    return False
+    try:
+        json_object = json.loads(myjson)
+    except ValueError as e:
+        return False
 
- return True
+    return True
 
 
-def single_start(request): # request
+def single_start(request):  # request
     # 获取需要解析网页的url及请求方式，如POST｜GET等
     print(str(request.POST))
     if request.POST:
@@ -131,7 +132,8 @@ def single_start(request): # request
             else:
                 req_headers['Content-Type'] = 'text/xml'
 
-            result = asyncio.get_event_loop().run_until_complete(regoing.requests_(url, req_headers, req_cookies, func, body, {}))
+            result = asyncio.get_event_loop().run_until_complete(
+                regoing.requests_(url, req_headers, req_cookies, func, body, {}))
             # result = {}
             return render(request, "main.html", result)
         else:
@@ -159,19 +161,22 @@ def single_start(request): # request
                 regoing.requests_(url, req_headers, req_cookies, func, form, files))
             return render(request, "main.html", result)
     elif (func == 'GET' or func == 'DELETE') and url != '':
-        result = asyncio.get_event_loop().run_until_complete(regoing.requests_(url, req_headers, req_cookies, func, {}, {}))
+        result = asyncio.get_event_loop().run_until_complete(
+            regoing.requests_(url, req_headers, req_cookies, func, {}, {}))
         # testdb(**result)
-        #存储到数据库
+        # 存储到数据库
         models.Test.objects.create(**result)
         return render(request, "main.html", result)
 
 
 def upload_file(request):
-    if request.method =="POST":
-        myFile = request.FILES.get("myfile",None)
+    if request.method == "POST":
+        myFile = request.FILES.get("myfile", None)
         if not myFile:
             return HttpResponse("no files for upload")
-        filename1 = os.path.join("C:\\python_workspace\\html_test\\html_test1\\htmlTest_dataGroup\\htmlTest\\csv_dir", myFile.name)
+        filename1 = os.path.join(
+            "/Users/blinger/PycharmProjects/pythonProject/html_test/htmlTest_dataGroup/htmlTest/tempfiles_dir",
+            myFile.name)
         destination = open(filename1, 'wb+')
         for chunk in myFile.chunks():
             destination.write(chunk)
@@ -191,7 +196,7 @@ def excel(filename1):
         print("表单长度为：" + str(len(sheet)))
         # i = 0
         # list = []
-        for row in sheet.index.values :
+        for row in sheet.index.values:
             docs = dict()
             docs['url'] = re.sub('nan', '', str(sheet.iloc[row, 0]))
             docs['func'] = re.sub('nan', '', str(sheet.iloc[row, 1]))
@@ -232,8 +237,9 @@ def many_start(request, data_list):
 
         if url != '' and (func == 'GET' or func == 'DELETE'):
             print("into get")
-            #get_delete_tasks.append(asyncio.ensure_future(
-            temp_result = asyncio.get_event_loop().run_until_complete(regoing.requests_(url, req_headers, req_cookies, func, {}, {}))
+            # get_delete_tasks.append(asyncio.ensure_future(
+            temp_result = asyncio.get_event_loop().run_until_complete(
+                regoing.requests_(url, req_headers, req_cookies, func, {}, {}))
             results.append(temp_result)
             # ))
         elif url != '' and func == 'POST':
@@ -241,14 +247,16 @@ def many_start(request, data_list):
             data_format = req.get('data_format', '')
             req_body = req.get('body', '')
             if data_format == 'raw':
-                #post_raw_tasks.append(asyncio.ensure_future(
-                temp_result = asyncio.get_event_loop().run_until_complete(regoing.requests_(url, req_headers, req_cookies, func, req_body, {}))
+                # post_raw_tasks.append(asyncio.ensure_future(
+                temp_result = asyncio.get_event_loop().run_until_complete(
+                    regoing.requests_(url, req_headers, req_cookies, func, req_body, {}))
                 results.append(temp_result)
-                #))
+                # ))
             elif data_format == 'kv':
                 req_body = split_form(req_body)
                 # post_other_tasks.append(asyncio.ensure_future(
-                temp_result = asyncio.get_event_loop().run_until_complete(regoing.requests_(url, req_headers, req_cookies, func, req_body, {}))
+                temp_result = asyncio.get_event_loop().run_until_complete(
+                    regoing.requests_(url, req_headers, req_cookies, func, req_body, {}))
                 results.append(temp_result)
                 # ))
         models.Test.objects.create(**temp_result)

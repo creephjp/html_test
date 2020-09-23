@@ -65,12 +65,22 @@
         });
     </script>
     -->
+
+    <script>
+        $(document).ready(function(){
+            if ($('#body-content').innerHeight()==0){
+                $('#response-tab-content-body').css("height","110px");
+            }
+        });
+    </script>
+
     <script>
                 $(function () {
                 var checkText = "";
                 $("#inputGroupSelect").change(function () {
                     //获取文件的value值
                     checkText = $("#inputGroupSelect").find ("option:selected").text ();
+                    alert(prehegiht);
                     if(checkText=="PUT" || checkText=="POST"){
                         $('#put-file').show();
                     }
@@ -80,6 +90,7 @@
                 })
             });
     </script>
+
 
     <div class="container">
         <form action="/form-input/" method="post" enctype="multipart/form-data">
@@ -137,12 +148,12 @@
             <div class="item-input tab-pane content-tabe" id="request-tab-content-cookie" role="tabpanel"
                 aria-labelledby="request-tab-cookie">
                 <textarea class="form-control request-content" id="request-content-cookie" name="request-content-cookie" rows="4"
-                    placeholder="json"></textarea>
+                    placeholder="{&#13;&#10;&quot;name&quot;: &quot;cookie1&quot;,&#13;&#10;&quot;value&quot;: &quot;val1&quot;&#13;&#10;};&#13;&#10;{&#13;&#10;&quot;name&quot;: &quot;cookie2&quot;,&#13;&#10;&quot;value&quot;: &quot;val2&quot;&#13;&#10;}"></textarea>
             </div>
             <div class="item-input tab-pane content-tab" id="request-tab-content-header" role="tabpanel"
                 aria-labelledby="request-tab-header">
                 <textarea class="form-control request-content" id="request-content-header" name="request-content-header" rows="4"
-                    placeholder="User-Agent: Mozilla/5.0 &#13;&#10;Cookie: key=value;"></textarea>
+                    placeholder="User-Agent: Mozilla/5.0"></textarea>
             </div>
         </div>
 </form>
@@ -165,7 +176,7 @@
         <div class="tab-content">
             <div class="tab-pane content-tab active" id="response-tab-content-body" role="tabpanel"
                 aria-labelledby="response-tab-body" style="border:1px solid #cfd4d9;">
-                <pre>{{ body }}</pre>
+                <pre id="body-content">{{ body }}</pre>
             </div>
 
             <div class="tab-pane content-tabe" id="response-tab-content-header" role="tabpanel"

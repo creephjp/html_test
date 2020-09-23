@@ -28,6 +28,8 @@ from pandas.tests.io.excel.test_xlrd import xlrd
 #         print (col)
 #     return HttpResponse("ok")
 import os
+
+
 def upload(request):
     if request.method == 'POST':# 获取对象
         obj = request.FILES.get('fafafa')

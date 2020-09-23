@@ -38,7 +38,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="./">单个测试</a>
+                    <a class="nav-link" href="http://127.0.0.1:8000">单个测试</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="">批量测试</a>
@@ -91,22 +91,22 @@
                     $("#uploadFileNameLable").text(fileName);
 
                 });
-                $("td").mouseover(function(event){
+                $(".show-item").mouseover(function(event){
 
                     $("#showbox").show().html($(this).text());
 
                 })
-                $("td").mousemove(function(event){
+                $(".show-item").mousemove(function(event){
                     var x= event.pageX + 10 + "px";
                     var y= event.pageY + 10 + "px";
                     $("#showbox").css({"left":x,"top":y});
                 })
-                $("td").mouseout(function(){ $("#showbox").hide();
+                $(".show-item").mouseout(function(){ $("#showbox").hide();
                 })
             });
         </script>
 <style>
-            td{
+            .show-item{
                overflow:hidden;
                 white-space:nowrap;
                 text-overflow:ellipsis;
@@ -116,6 +116,7 @@
                 background-color:#d0d4d8;
                 left:159px;
                 top:100px;
+                {#width:400px;#}
                 height:20px;
                 z-index:99;
                 display:none;
@@ -127,7 +128,7 @@
         <br><br><br>
         <h2>测试结果</h2>
         <div class="table-responsive">
-            <table class="table text-nowrap">
+            <table class="table text-nowrap" style="table-layout:fixed">
                 <thead>
                     <tr>
                         <th scope="col">URL</th>
@@ -142,13 +143,13 @@
                 <tbody>
                 {% for doc in results %}
                     <tr>
-                        <td>{{ doc.url }}</td>
-                        <td>{{ doc.func }}</td>
-                        <td>{{ doc.status }}</td>
-                        <td>{{ doc.RTT }}</td>
+                        <td class="show-item">{{ doc.url }}</td>
+                        <td class="show-item">{{ doc.func }}</td>
+                        <td class="show-item">{{ doc.status }}</td>
+                        <td class="show-item">{{ doc.RTT }}</td>
 {#                        <td>{{ doc.data_format }}</td>#}
-                        <td>{{ doc.resp_headers }}</td>
-                        <td>{{ doc.resp_cookies }}</td>
+                        <td class="show-item">{{ doc.resp_headers }}</td>
+                        <td class="show-item">{{ doc.resp_cookies }}</td>
                         <td>{{ doc.body }}</td>
                     </tr>
                 {% endfor %}

@@ -16,7 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
+# from . import search2, views
+# from htmlTest_dataGroup.htmlTest.htmlTest import search2, views
 from . import search2, views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^search-post$', search2.search_post),
@@ -27,6 +30,8 @@ urlpatterns = [
     path('muit/',views.muit),
     url(r'^$', views.hello),
     path('uploadFile/', views.upload_file),
+    path('form-input/muit/', views.muit),
+    # path('muit.', views.muit),
 
 ]
 # "User-Agent:Agent"
