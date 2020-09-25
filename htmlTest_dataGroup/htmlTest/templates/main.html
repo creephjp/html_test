@@ -69,12 +69,21 @@
 
 
     <script>
+        $(document).ready(function(){
+            if ($('#body-content').innerHeight()==0){
+                $('#response-tab-content-body').css("height","110px");
+            }
+        });
+    </script>
+    <script>
                 $(function () {
                 var checkText = "";
                 $("#inputGroupSelect").change(function () {
+                    prehegiht = $('#body-content').innerHeight();
+
                     //获取文件的value值
                     checkText = $("#inputGroupSelect").find ("option:selected").text ();
-                    alert(prehegiht);
+
                     if(checkText=="PUT" || checkText=="POST"){
                         $('#put-file').show();
                     }
