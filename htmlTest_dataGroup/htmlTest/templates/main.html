@@ -66,13 +66,7 @@
     </script>
     -->
 
-    <script>
-        $(document).ready(function(){
-            if ($('#body-content').innerHeight()==0){
-                $('#response-tab-content-body').css("height","110px");
-            }
-        });
-    </script>
+
 
     <script>
                 $(function () {
@@ -90,7 +84,13 @@
                 })
             });
     </script>
-
+<script>
+        $(document).ready(function(){
+            if ($('#body-content').innerHeight()==0){
+                $('#response-tab-content-body').css("height","110px");
+            }
+        });
+    </script>
 
     <div class="container">
         <form action="/form-input/" method="post" enctype="multipart/form-data">

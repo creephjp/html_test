@@ -222,6 +222,10 @@ def many_start(request, data_list):
     post_other_tasks = []
     results = []
     print("所传输的数据：" + str(data_list))
+
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
     for req in data_list:
         # 处理headers,cookies,form
         print("into for")
@@ -232,40 +236,46 @@ def many_start(request, data_list):
         req_headers = split_headers(req.get('headers', ''))
         req_cookies = split_cookies(req.get('cookies', ''), req.get('url'))
 
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-
         if url != '' and (func == 'GET' or func == 'DELETE'):
             print("into get")
-            # get_delete_tasks.append(asyncio.ensure_future(
-            temp_result = asyncio.get_event_loop().run_until_complete(
+            get_delete_tasks.append(asyncio.ensure_future(
+            # temp_result = asyncio.get_event_loop().run_until_complete(
                 regoing.requests_(url, req_headers, req_cookies, func, {}, {}))
-            results.append(temp_result)
-            # ))
+            # results.append(temp_result)
+            )
         elif url != '' and func == 'POST':
             print("into post")
             data_format = req.get('data_format', '')
             req_body = req.get('body', '')
             if data_format == 'raw':
-                # post_raw_tasks.append(asyncio.ensure_future(
-                temp_result = asyncio.get_event_loop().run_until_complete(
+                post_raw_tasks.append(asyncio.ensure_future(
+                #temp_result = asyncio.get_event_loop().run_until_complete(
                     regoing.requests_(url, req_headers, req_cookies, func, req_body, {}))
-                results.append(temp_result)
-                # ))
+                #results.append(temp_result)
+                )
             elif data_format == 'kv':
                 req_body = split_form(req_body)
-                # post_other_tasks.append(asyncio.ensure_future(
-                temp_result = asyncio.get_event_loop().run_until_complete(
+                post_other_tasks.append(asyncio.ensure_future(
+                # temp_result = asyncio.get_event_loop().run_until_complete(
                     regoing.requests_(url, req_headers, req_cookies, func, req_body, {}))
-                results.append(temp_result)
-                # ))
+                # results.append(temp_result)
+                )
+        # models.Test.objects.create(**temp_result)
+    # print('添加完成')
+    if post_other_tasks: asyncio.get_event_loop().run_until_complete(asyncio.wait(post_other_tasks))
+    if post_raw_tasks: asyncio.get_event_loop().run_until_complete(asyncio.wait(post_raw_tasks))
+    if get_delete_tasks: asyncio.get_event_loop().run_until_complete(asyncio.wait(get_delete_tasks))
+    # print('执行完成')
+    tasks_result = []
+    tasks_result.extend(get_delete_tasks)
+    tasks_result.extend(post_raw_tasks)
+    tasks_result.extend(post_other_tasks)
+
+    for item in tasks_result:
+        # print("结果为：")
+        temp_result = item.result()
         models.Test.objects.create(**temp_result)
+        results.append(temp_result)
 
-    # if post_other_tasks: asyncio.get_event_loop().run_until_complete(asyncio.wait(post_other_tasks))
-    # if post_raw_tasks: asyncio.get_event_loop().run_until_complete(asyncio.wait(post_raw_tasks))
-    # if get_delete_tasks: asyncio.get_event_loop().run_until_complete(asyncio.wait(get_delete_tasks))
-
-    # for item in get_delete_tasks:
-    #     print("结果为：")
-    #     print(type(item.result()))
+    # results = []
     return results
