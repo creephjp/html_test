@@ -16,95 +16,43 @@ from TestModel import models
 
 # from . import regoing
 from . import regoing
-from .init import split_form
+from .init import split_form, split_headers, split_cookies, is_json
 
-
+file_results = []
 # 用例导入
+
+
 def hello(request):
     return render(request, 'main.html')
 
-
-# def upload(request):
-#     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-#     if request.method == 'POST':# 获取对象
-#         obj = request.FILES.get('fafafa')
-#         f = open(os.path.join(BASE_DIR, 'static', 'pic', obj.name), 'wb')
-#         for chunk in obj.chunks():
-#             f.write(chunk)
-#         f.close()
-#         return HttpResponse('OK')
-#     return render(request, "index.html")
 
 def muit(request):
     return render(request, 'muit.html')
 
 
-def split_headers(str_headers):
-    if str_headers != '':
-        dic_headers = {}
-        str_headers = re.sub(' ', '', str_headers)
-        list_raw = str_headers.split('\n')
-        # print(list_raw)
-        for item in list_raw:
-            kv_list = item.split(':')
-            dic_headers[kv_list[0]] = kv_list[1]
-    else:
-        dic_headers = {
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
-            'Connection': 'keep-alive',
-        }
+# 下载测试结果
+def download(request):
+    # 创建文件路径
+    file_path = os.path.join(
+            "/Users/blinger/PycharmProjects/pythonProject/html_test/htmlTest_dataGroup/htmlTest/tempfiles_dir/",
+            str(int(time.time()))+'.xlsx')
 
-    return dic_headers
+    # 生成文件
+    pf = pandas.DataFrame(file_results[0])
+    pf.fillna('', inplace=True)
+    pf.to_excel(file_path, encoding='utf-8', index=False)
 
-
-def split_form(str_form):
-    if str_form != '':
-        dic_form = {}
-        str_body = re.sub(' ', '', str_form)
-        list_raw = str_body.split('\n')
-        for item in list_raw:
-            kv_list = item.split(':')
-            dic_form[kv_list[0]] = kv_list[1]
-    else:
-        dic_form = {}
-
-    return dic_form
+    # 返回文件
+    file = open(file_path, 'rb')
+    response = HttpResponse(file)
+    response['Content-Type'] = 'application/octet-stream'  # 设置头信息，告诉浏览器这是个文件
+    response['Content-Disposition'] = 'attachment;filename="result.xlsx"'
+    return response
 
 
-def split_cookies(str_cookies, url):
-    if str_cookies != '':
-        cookies = []
-        str_cookies = re.sub("'", '"', str_cookies)
-        temp_cookies = re.sub('\n', '', re.sub(' ', '', str_cookies))
-        cookie_list = temp_cookies.split(';')
-        print(cookie_list)
-        for item in cookie_list:
-            # print(type(item))
-            cookie = json.loads(item)
-            if 'url' not in cookie.keys():
-                cookie['url'] = url
-            # 设置到期时间
-            # if 'expires' not in cookie.keys():
-            #     cookie['expires'] = int(time.time()) + 3600
-            cookies.append(cookie)
-    else:
-        cookies = []
-
-    return cookies
-
-
-def is_json(myjson):
-    try:
-        json_object = json.loads(myjson)
-    except ValueError as e:
-        return False
-
-    return True
-
-
+# 单url处理
 def single_start(request):  # request
     # 获取需要解析网页的url及请求方式，如POST｜GET等
-    print(str(request.POST))
     if request.POST:
         url = request.POST['url']
         func = request.POST['func']
@@ -120,31 +68,31 @@ def single_start(request):  # request
     # 设置并发队列
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
-    # 不同的请求再调用不同的处理函数
+    # 不同的请求方式传入不同的Request参数
     if (func == 'POST' or func == 'PUT') and url != '':
         data_format = request.POST.get('data_format', '')
-        print("提交方式为：" + str(data_format))
+        # 用户所上传的Body为json、xml或字符串类型
         if data_format == 'raw':
             body = request.POST.get('request-content-body', '')
-            # 根据用户输入body格式进行处理提交格式
+            # 根据用户输入body格式添加请求头
             if is_json(body):
                 req_headers['Content-Type'] = 'application/json'
             else:
                 req_headers['Content-Type'] = 'text/xml'
 
+            # 调用模拟请求接口
             result = asyncio.get_event_loop().run_until_complete(
                 regoing.requests_(url, req_headers, req_cookies, func, body, {}))
-            # result = {}
+            models.Test.objects.create(**result)
+            # 根据测试结果渲染前端界面
             return render(request, "main.html", result)
         else:
             # 处理表单
             str_form = request.POST.get('request-content-body', '')
-            print(str_form)
             form = split_form(str_form)
+
             # 处理所传输的文件
             file = request.FILES.get('file', '')
-            # file_content = request.FILES.get('file_content', '')
-            print("文件为：" + str(file))
             if file == '':
                 files = {}
             else:
@@ -156,21 +104,29 @@ def single_start(request):  # request
                 files = {
                     file.name: destination
                 }
-                # destination.close()
+
+            # 调用模拟请求接口
             result = asyncio.get_event_loop().run_until_complete(
                 regoing.requests_(url, req_headers, req_cookies, func, form, files))
+            # 将结果保存至数据库
+            models.Test.objects.create(**result)
+            # 根据测试结果渲染前端界面
             return render(request, "main.html", result)
     elif (func == 'GET' or func == 'DELETE') and url != '':
+        # 调用模拟请求接口
         result = asyncio.get_event_loop().run_until_complete(
             regoing.requests_(url, req_headers, req_cookies, func, {}, {}))
-        # testdb(**result)
+
         # 存储到数据库
         models.Test.objects.create(**result)
+        # 根据测试结果渲染前端界面
         return render(request, "main.html", result)
 
 
+# 接收用户所上传的批量测试文件
 def upload_file(request):
     if request.method == "POST":
+        # 接收用户所上传的批量测试文件
         myFile = request.FILES.get("myfile", None)
         if not myFile:
             return HttpResponse("no files for upload")
@@ -181,21 +137,25 @@ def upload_file(request):
         for chunk in myFile.chunks():
             destination.write(chunk)
         destination.close()
-        results = excel(filename1)
-        # print("返回结果：" + str(results))
-        results = many_start(request, results)
 
-        # return results
+        # 将文件内容转换为列表，列表中的元素为字典，即一条测试数据
+        results = excel(filename1)
+
+        # 调用批量处理接口
+        results = many_start(request, results)
+        file_results.append(results)
+
+        # 根据结果渲染前端界面
         return render(request, "muit.html", {'results': results})
 
 
+# 处理表格数据
 def excel(filename1):
-    list = []
+    result_list = []
     try:
         sheet = pandas.read_excel(filename1, "Sheet1")
         print("表单长度为：" + str(len(sheet)))
-        # i = 0
-        # list = []
+
         for row in sheet.index.values:
             docs = dict()
             docs['url'] = re.sub('nan', '', str(sheet.iloc[row, 0]))
@@ -204,78 +164,71 @@ def excel(filename1):
             docs['headers'] = re.sub('nan', '', str(sheet.iloc[row, 3]))
             docs['cookies'] = re.sub('nan', '', str(sheet.iloc[row, 4]))
             docs['body'] = re.sub('nan', '', str(sheet.iloc[row, 5]))
-            list.append(docs)
-            # i = i+1
-        # list2 = [1,2,3,4]
-        # dic = zip(list2,list)
+            result_list.append(docs)
+
     except Exception as e:
         print(e)
-    # return docs
-    return list
+
+    return result_list
 
 
+# 批量测试接口
 def many_start(request, data_list):
-    # url=[''] func=[''] headers=[{}] cookies[[{}]] body[""]
-
+    # 初始化协程集合
     get_delete_tasks = []
     post_raw_tasks = []
     post_other_tasks = []
     results = []
-    print("所传输的数据：" + str(data_list))
 
+    # 创建并设置事件循环
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
+    # 处理请求数据并调用模拟请求接口
     for req in data_list:
-        # 处理headers,cookies,form
-        print("into for")
-        # print(req)
-
+        # 处理测试数据
         url = req.get('url')
         func = req.get('func')
         req_headers = split_headers(req.get('headers', ''))
         req_cookies = split_cookies(req.get('cookies', ''), req.get('url'))
 
+        # 根据不同的请求方式调用不同的模拟请求接口
         if url != '' and (func == 'GET' or func == 'DELETE'):
-            print("into get")
+            # 创建协程对象并封装为task，等待并发执行
             get_delete_tasks.append(asyncio.ensure_future(
-            # temp_result = asyncio.get_event_loop().run_until_complete(
                 regoing.requests_(url, req_headers, req_cookies, func, {}, {}))
-            # results.append(temp_result)
             )
         elif url != '' and func == 'POST':
-            print("into post")
             data_format = req.get('data_format', '')
             req_body = req.get('body', '')
             if data_format == 'raw':
+                # 创建协程对象并封装为task，等待并发执行
                 post_raw_tasks.append(asyncio.ensure_future(
-                #temp_result = asyncio.get_event_loop().run_until_complete(
                     regoing.requests_(url, req_headers, req_cookies, func, req_body, {}))
-                #results.append(temp_result)
                 )
             elif data_format == 'kv':
                 req_body = split_form(req_body)
+                # 创建协程对象并封装为task，等待并发执行
                 post_other_tasks.append(asyncio.ensure_future(
-                # temp_result = asyncio.get_event_loop().run_until_complete(
                     regoing.requests_(url, req_headers, req_cookies, func, req_body, {}))
-                # results.append(temp_result)
                 )
-        # models.Test.objects.create(**temp_result)
-    # print('添加完成')
+
+    # 通过事件循环调用协程函数，并发执行模拟请求
     if post_other_tasks: asyncio.get_event_loop().run_until_complete(asyncio.wait(post_other_tasks))
     if post_raw_tasks: asyncio.get_event_loop().run_until_complete(asyncio.wait(post_raw_tasks))
     if get_delete_tasks: asyncio.get_event_loop().run_until_complete(asyncio.wait(get_delete_tasks))
-    # print('执行完成')
+
+    # 将不同请求方式添加到一个列表中
     tasks_result = []
     tasks_result.extend(get_delete_tasks)
     tasks_result.extend(post_raw_tasks)
     tasks_result.extend(post_other_tasks)
 
+    # 遍历每一个协程的执行结果
     for item in tasks_result:
-        # print("结果为：")
         temp_result = item.result()
+        # 保存至数据库
         models.Test.objects.create(**temp_result)
         results.append(temp_result)
 
-    # results = []
     return results

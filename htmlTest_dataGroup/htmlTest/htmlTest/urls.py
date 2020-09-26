@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^$', views.hello),
     path('uploadFile/', views.upload_file),
     path('form-input/muit/', views.muit),
+    path('download/', views.download),
     # path('muit.', views.muit),
 
 ]

@@ -6,6 +6,23 @@ import re
 # header、cookie、body需要做输入合法性检测
 
 
+# def get_data(request, url): # request
+#     if request.POST:
+#         str_headers = request.POST['req_headers']
+#         req_headers = split_headers(str_headers)
+#
+#         str_cookies = request.POST['req_cookies']
+#         req_cookies = split_cookies(str_cookies, url)
+#
+#         ret_dic = {
+#             'req_headers': req_headers,
+#             'req_cookies': req_cookies
+#         }
+#
+#         return ret_dic
+
+
+# 将请求头转换为字典
 def split_headers(str_headers):
     if str_headers != '':
         dic_headers = {}
@@ -14,9 +31,9 @@ def split_headers(str_headers):
         # print(list_raw)
         for item in list_raw:
             kv_list = item.split(':')
-
             dic_headers[kv_list[0]] = kv_list[1]
     else:
+        # 如果用户未提交Headers，则设置默认值
         dic_headers = {
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
             'Connection': 'keep-alive',
@@ -25,6 +42,7 @@ def split_headers(str_headers):
     return dic_headers
 
 
+# 将表单转换为字典
 def split_form(str_form):
     if str_form != '':
         dic_form = {}
@@ -39,6 +57,7 @@ def split_form(str_form):
     return dic_form
 
 
+# 将用户所输入的每组Cookie转换为字典，然后添加到列表中
 def split_cookies(str_cookies, url):
     if str_cookies != '':
         cookies = []
@@ -61,23 +80,11 @@ def split_cookies(str_cookies, url):
     return cookies
 
 
-def get_data(request, url): # request
-    if request.POST:
-        str_headers = request.POST['req_headers']
-        req_headers = split_headers(str_headers)
+# 判断字符串是否是json
+def is_json(myjson):
+    try:
+        json_object = json.loads(myjson)
+    except ValueError as e:
+        return False
 
-        str_cookies = request.POST['req_cookies']
-        req_cookies = split_cookies(str_cookies, url)
-
-        ret_dic = {
-            'req_headers': req_headers,
-            'req_cookies': req_cookies
-        }
-
-        return ret_dic
-
-
-
-
-# single_start()
-# many_start(request.data_list)
+    return True

@@ -72,7 +72,12 @@
         $(document).ready(function(){
             if ($('#body-content').innerHeight()==0){
                 $('#response-tab-content-body').css("height","110px");
+            };
+            if($('#status-code').text()==200){
+                $('#status-code').addClass("badge-success")
             }
+            else
+                $('#status-code').addClass("badge-danger")
         });
     </script>
     <script>
@@ -83,7 +88,6 @@
 
                     //获取文件的value值
                     checkText = $("#inputGroupSelect").find ("option:selected").text ();
-
                     if(checkText=="PUT" || checkText=="POST"){
                         $('#put-file').show();
                     }
@@ -181,7 +185,19 @@
                 <a class="nav-link" id="response-tab-Cookie" data-toggle="tab"
                     href="#response-tab-content-cookie">Cookie</a>
             </li>
+            <li class="ml-auto">
+                    <a class="nav-link" id="status" data-toggle="tooltip" data-placement="top" title="" one-link-mark="yes" data-original-title="200 OK">
+                        <span class="badge" id="status-code" >{{status}}</span>
+                    </a>
+            </li>
         </ul>
+
+{#        <a style="float: right;">status</a>#}
+{#        <a class="nav-link" id="status" data-toggle="tooltip" data-placement="top" title="" one-link-mark="yes" data-original-title="200 OK">#}
+{#                        <span class="badge badge-success" id="status-code">200</span>#}
+{#                        <div class="spinner-border spinner-border-sm text-primary d-none" role="status" id="status-loading"></div>#}
+{#                    </a>#}
+
         <div class="tab-content">
             <div class="tab-pane content-tab active" id="response-tab-content-body" role="tabpanel"
                 aria-labelledby="response-tab-body" style="border:1px solid #cfd4d9;">

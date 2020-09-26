@@ -7,7 +7,7 @@ async def set_cookies(s, kwargs):
     value = kwargs.get('value', '')
     domain = kwargs.get('domain', '')
     path = kwargs.get('path', '')
-    expiry = kwargs.get('expiry', int(time.time()))
+    expiry = kwargs.get('expiry', int(time.time()) + 1000)
 
     temp_cookie = requests.cookies.create_cookie(**{
         'name': name,
