@@ -14,8 +14,7 @@ import logging
 from . import testdb
 from TestModel import models
 
-# from . import regoing
-from . import regoing
+from .aiogoing import request_
 from .init import split_form, split_headers, split_cookies, is_json
 
 file_results = []
@@ -82,9 +81,10 @@ def single_start(request):  # request
 
             # 调用模拟请求接口
             result = asyncio.get_event_loop().run_until_complete(
-                regoing.requests_(url, req_headers, req_cookies, func, body, {}))
+                request_(url, req_headers, req_cookies, func, body, {}))
             models.Test.objects.create(**result)
             # 根据测试结果渲染前端界面
+            result['body'] = result['body'].decode('utf-8')
             return render(request, "main.html", result)
         else:
             # 处理表单
@@ -94,32 +94,34 @@ def single_start(request):  # request
             # 处理所传输的文件
             file = request.FILES.get('file', '')
             if file == '':
-                files = {}
+                file = ''
             else:
                 filename = os.path.join(
-                    "C:\\python_workspace\\html_test\\html_test1\\htmlTest_dataGroup\\htmlTest\\csv_dir", file.name)
+                    "/Users/blinger/PycharmProjects/pythonProject/html_test/htmlTest_dataGroup/htmlTest/tempfiles_dir/", file.name)
                 destination = open(filename, 'wb+')
                 for chunk in file.chunks():
                     destination.write(chunk)
-                files = {
-                    file.name: destination
-                }
+
+                destination.close()
+
 
             # 调用模拟请求接口
             result = asyncio.get_event_loop().run_until_complete(
-                regoing.requests_(url, req_headers, req_cookies, func, form, files))
+                request_(url, req_headers, req_cookies, func, form, file))
             # 将结果保存至数据库
             models.Test.objects.create(**result)
             # 根据测试结果渲染前端界面
+            result['body'] = result['body'].decode('utf-8')
             return render(request, "main.html", result)
     elif (func == 'GET' or func == 'DELETE') and url != '':
         # 调用模拟请求接口
         result = asyncio.get_event_loop().run_until_complete(
-            regoing.requests_(url, req_headers, req_cookies, func, {}, {}))
+            request_(url, req_headers, req_cookies, func, {}, {}))
 
         # 存储到数据库
         models.Test.objects.create(**result)
         # 根据测试结果渲染前端界面
+        result['body'] = result['body'].decode('utf-8')
         return render(request, "main.html", result)
 
 
@@ -196,7 +198,7 @@ def many_start(request, data_list):
         if url != '' and (func == 'GET' or func == 'DELETE'):
             # 创建协程对象并封装为task，等待并发执行
             get_delete_tasks.append(asyncio.ensure_future(
-                regoing.requests_(url, req_headers, req_cookies, func, {}, {}))
+                request_(url, req_headers, req_cookies, func, {}, {}))
             )
         elif url != '' and func == 'POST':
             data_format = req.get('data_format', '')
@@ -204,13 +206,13 @@ def many_start(request, data_list):
             if data_format == 'raw':
                 # 创建协程对象并封装为task，等待并发执行
                 post_raw_tasks.append(asyncio.ensure_future(
-                    regoing.requests_(url, req_headers, req_cookies, func, req_body, {}))
+                    request_(url, req_headers, req_cookies, func, req_body, {}))
                 )
             elif data_format == 'kv':
                 req_body = split_form(req_body)
                 # 创建协程对象并封装为task，等待并发执行
                 post_other_tasks.append(asyncio.ensure_future(
-                    regoing.requests_(url, req_headers, req_cookies, func, req_body, {}))
+                    request_(url, req_headers, req_cookies, func, req_body, {}))
                 )
 
     # 通过事件循环调用协程函数，并发执行模拟请求
@@ -229,6 +231,8 @@ def many_start(request, data_list):
         temp_result = item.result()
         # 保存至数据库
         models.Test.objects.create(**temp_result)
+        temp_result['body'] = temp_result['body'].decode('utf-8')
+
         results.append(temp_result)
 
     return results

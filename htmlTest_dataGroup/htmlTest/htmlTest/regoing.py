@@ -22,6 +22,7 @@ async def set_cookies(s, kwargs):
 
 
 async def requests_(url, req_headers, req_cookies, func, form, file):
+    print(url + '开始模拟请求的时间为' + str(time.time()))
     resp_cookies = []
     session = requests.Session()
     for cookie in req_cookies:
@@ -86,7 +87,7 @@ async def requests_(url, req_headers, req_cookies, func, form, file):
         'RTT': rtt,  # int
         'resp_headers': resp_headers,  # dic
         'resp_cookies': resp_cookies,  # list[dic{}]
-        'body': content
+        'body': str(content)
     }
-
+    # print(url + "结束模拟请求的时间为： " + str(int(time.time())))
     return ret_dic

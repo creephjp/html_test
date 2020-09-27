@@ -87,8 +87,8 @@ DATABASES = {
         'USER': 'root',  # 数据库用户名
         'PASSWORD': '123456', # 数据库密码
         'TEST': {
-            'CHARSET': 'utf8',
-            'COLLATION': 'utf8_general_ci'
+            'CHARSET': 'utf8mb4',
+            'COLLATION': 'utf8mb4_bin'
         }
     }
 }
